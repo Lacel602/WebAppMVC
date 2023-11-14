@@ -1,0 +1,532 @@
+﻿@addTagHelper *,Microsoft.AspNetCore.Mvc.TagHelpers
+
+@{
+    ViewData["Title"] = "FPT University Academic Portal";
+}
+
+<head>
+    <link rel="Stylesheet" href="css/homeStyle.css" type="text/css" />
+    <script src="lib/jquery/dist/jquery.js"></script>
+</head>
+<body>
+    <div class="container">
+        <div class="row">
+            <div class="col-md-8">
+                <h1>
+                    <span>FPT University Academic Portal</span>
+                </h1>
+            </div>
+            <div class="col-md-4">
+                <table class="header">
+                    <tr>
+                        <td colspan="2" class="auto-style1"><strong>FAP mobile app (myFAP) is ready at</strong></td>
+
+                    </tr>
+                    <tr>
+                        <td>
+                            <a class="download-img" href="https://apps.apple.com/app/id1527723314">
+                                <img class="app-button" src="https://fap.fpt.edu.vn/images/app-store.png" style="width: 120px; height: 40px" alt="apple store" />
+                            </a>
+                        </td>
+                        <td>
+                            <a class="download-img" href="https://play.google.com/store/apps/details?id=com.fuct">
+                                <img class="app-button" src="https://fap.fpt.edu.vn/images/play-store.png" style="width: 120px; height: 40px" alt="google store" />
+                            </a>
+                        </td>
+
+                    </tr>
+                </table>
+            </div>
+        </div>
+        <div class="row">
+            <div class="navi">
+                <div class="nav-button">
+                    <a href="#">@ViewBag.User.Code</a>
+                    |
+                    <a onclick="Logout()">Logout</a>
+                    |
+                    <a>CAMPUS: @ViewBag.User.Campus.Name</a>
+                </div>
+            </div>
+
+            <div class="d-flex" style="padding:0px; margin-top: 35px;">
+                <div class="listBoxWrap">
+
+                    <h3 class="blue-title">News</h3>
+
+                    <div class="information">
+                        <b>Tin tức</b>
+                        <a class="orange-button" href="#">xem tại đây</a>
+                    </div>
+
+                    <div>
+                        <table class="left-table table-bordered">
+                            <tr class="notice">
+                                <td colspan="2">
+                                    <div>
+                                        <span>IMPORTANT NOTICE</span>
+                                    </div>
+                                </td>
+                            </tr>
+                            <tr class="table-head">
+                                <td>
+                                    <span>Type of produce |</span>
+                                    <br />
+                                    <span>Loại thủ tục</span>
+                                </td>
+                                <td>
+                                    <span>Deadline |</span>
+                                    <br />
+                                    <span>Hạn nộp đơn</span>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    <div class="td-inside">
+                                        <span>1. </span>
+                                        <span class="blue-light">Changing major</span>
+                                        <span>(Chuyển ngành)</span>
+                                    </div>
+                                </td>
+                                <td rowspan="2">
+                                    <div class="td-inside">
+                                        <span class="blue-light">4 weeks before the new semester</span>
+                                        <span>(4 tuần trước học kì mới)</span>
+                                    </div>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    <div class="td-inside">
+                                        <span>2. </span>
+                                        <span class="blue-light">Changing campus</span>
+                                        <span>(Chuyển cơ sở)</span>
+                                    </div>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    <div class="td-inside">
+                                        <span>3. </span>
+                                        <span class="blue-light">Rejoin</span>
+                                        <span>(Nhập học trở lại)</span>
+                                    </div>
+                                </td>
+                                <td>
+                                    <div class="td-inside">
+                                        <span class="blue-light">10 days before the new semester</span>
+                                        <span>(10 ngày trước học kì mới)</span>
+                                    </div>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    <div class="td-inside">
+                                        <span>4. </span>
+                                        <span class="blue-light">Suspend one semester</span>
+                                        <span>(Bảo lưu học kì)</span>
+                                    </div>
+                                </td>
+                                <td rowspan="8">
+                                    <div class="td-inside">
+                                        <span class="blue-light">1 weeks before the new semester</span>
+                                        <span>(1 tuần trước học kì mới)</span>
+                                    </div>
+                                </td>
+                            </tr>
+
+                            <tr>
+                                <td>
+                                    <div class="td-inside">
+                                        <span>5. </span>
+                                        <span class="blue-light">Suspend one semester to take repeated course</span>
+                                        <span>(Tạm ngưng tiến độ 1 học kì để học lại)</span>
+                                    </div>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    <div class="td-inside">
+                                        <span>6. </span>
+                                        <span class="blue-light">Suspend subject</span>
+                                        <span>(Tạm ngừng môn)</span>
+                                    </div>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    <div class="td-inside">
+                                        <span>7. </span>
+                                        <span class="blue-light">Register to repeat a course</span>
+                                        <span>(Đăng kí học lại)</span>
+                                    </div>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    <div class="td-inside">
+                                        <span>8. </span>
+                                        <span class="blue-light">Register extra courses</span>
+                                        <span>(Đăng kí học đi chậm kì)</span>
+                                    </div>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    <div class="td-inside">
+                                        <span>9. </span>
+                                        <span class="blue-light">Register to improve mark</span>
+                                        <span>(Đăng kí học cải thiện)</span>
+                                    </div>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    <div class="td-inside">
+                                        <span>10. </span>
+                                        <span class="blue-light">Move out class</span>
+                                        <span>(Chuyển lớp)</span>
+                                    </div>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    <div class="td-inside">
+                                        <span>11. </span>
+                                        <span class="blue-light">Request a drop out</span>
+                                        <span>(Thôi học tự nguyện)</span>
+                                    </div>
+                                </td>
+                            </tr>
+
+                            <tr>
+                                <td>
+                                    <div class="td-inside">
+                                        <span>12. </span>
+                                        <span class="blue-light">Retake to improve mark </span>
+                                        <span>(Thi cải thiện)</span>
+                                    </div>
+                                </td>
+                                <td>
+                                    <div class="td-inside">
+                                        <span class="blue-light">12 hours before the exam </span>
+                                        <span>(12h trước khi thi lại)</span>
+                                    </div>
+                                </td>
+                            </tr>
+
+                            <tr>
+                                <td>
+                                    <div class="td-inside">
+                                        <span>13. </span>
+                                        <span class="blue-light">Re - Examination </span>
+                                        <span>(Phúc tra) </span>
+                                    </div>
+                                </td>
+                                <td>
+                                    <div class="td-inside">
+                                        <span class="blue-light">10 days after the examination result public </span>
+                                        <span>(4 ngày sau công bố kết quả)</span>
+                                    </div>
+                                </td>
+                            </tr>
+
+                            <tr>
+                                <td>
+                                    <div class="td-inside">
+                                        <span>14. </span>
+                                        <span class="blue-light">Free of attendance</span>
+                                        <span>(Miễn điểm danh)</span>
+                                    </div>
+                                </td>
+                                <td>
+                                    <div class="td-inside">
+                                        <span class="blue-light">2 weeks after starting the new semester</span>
+                                        <span>(2 tuần sau khi học kì mới bắt đầu)</span>
+                                    </div>
+                                </td>
+                            </tr>
+
+
+                            <tr>
+                                <td>
+                                    <div class="td-inside">
+                                        <span>15. </span>
+                                        <span class="blue-light">Pay specialized tuition</span>
+                                        <span>(Nộp học phí chuyên ngành)</span>
+                                    </div>
+                                </td>
+                                <td>
+                                    <div class="td-inside">
+                                        <span class="blue-light">5 working days before the new semester </span>
+                                        <span>(5 ngày trước học kỳ học mới không tính T7, CN)</span>
+                                    </div>
+                                </td>
+                            </tr>
+
+
+                            <tr>
+                                <td>
+                                    <div class="td-inside">
+                                        <span>16. </span>
+                                        <span class="blue-light">Pay preparetation English tuition</span>
+                                        <span>(Nộp học phí Tiếng Anh dự bị)</span>
+                                    </div>
+                                </td>
+                                <td>
+                                    <div class="td-inside">
+                                        <span class="blue-light">3 working days before the new course </span>
+                                        <span>(3 ngày trước khi bắt đầu khóa học không tính T7, CN)</span>
+                                    </div>
+                                </td>
+                            </tr>
+                        </table>
+                    </div>
+
+                </div>
+                <div class="listBoxWrap">
+                    <h3 class="orange-title">Academic Information</h3>
+
+                    <div class="academic-div">
+                        <table class="right-table">
+                            <tbody>
+                                <tr>
+                                    <td valign="top" style="width:55%">
+                                        <h4>Registration/Application(Thủ tục/đơn từ)</h4>
+                                        <ul>
+                                            <li>
+                                                <a href="#">Suspend one semester to take repeated course</a>
+                                                <span>|</span>
+                                                <a href="#">Cancel</a>
+                                                <span>(Xin tạm hoãn tiến độ một học kỳ để học lại | Hủy bỏ việc xin tạm hoãn)</span>
+                                            </li>
+                                            <li>
+                                                <a href="#">Suspend one semester</a>
+                                                <span>|</span>
+                                                <a href="#">Cancel</a>
+                                                <span>(Xin tạm nghỉ một học kỳ | Hủy bỏ việc xin tạm nghỉ)</span>
+                                            </li>
+                                            <li>
+                                                <a href="#">Move out class</a>
+                                                <span>(Xin chuyển lớp)</span>
+                                            </li>
+                                            <li>
+                                                <a href="#">Register extra courses</a>
+                                                <span> (Đăng ký môn học đi chậm kỳ)</span>
+                                            </li>
+                                            <li>
+                                                <a href="#">Register to improve mark</a>
+                                                <span> (Đăng ký học cải thiện điểm)</span>
+                                            </li>
+                                            <li>
+                                                <a href="#">Register to repeat a course</a>
+                                                <span>(Đăng ký học lại)</span>
+                                            </li>
+                                            <li>
+                                                <a href="#">Cancel registration</a>
+                                                <span>(Hủy đăng ký học)</span>
+                                            </li>
+                                            <li>
+                                                <a href="#">Register Free Elective Courses</a>
+                                                <span>(Đăng ký môn tự chọn)</span>
+                                            </li>
+                                            <li>
+                                                <a href="#">Send Application</a>
+                                                <span>(Gửi đơn) |</span>
+                                                <a href="#">View Application</a>
+                                                <span>(Xem đơn)</span>
+                                            </li>
+                                            <li>
+                                                <a href="#">Xin xác nhận sinh viên</a>
+                                                <span></span>
+                                            </li>
+                                            <li>
+                                                <a href="#">Choose paid items (Lựa chọn các khoản nộp)</a>
+                                                <span>-</span>
+                                                <a href="#">View</a>
+                                            </li>
+                                            <li>
+                                                <a href="#">Yêu cầu đổi chéo lớp với sinh viên</a>
+                                                <span></span>
+                                            </li>
+                                            <li>
+                                                <a href="#">Sinh viên điểm danh bằng mã được cấp</a>
+                                                <span></span>
+                                            </li>
+                                            <li>
+                                                <a href="#">Wishlist Course</a>
+                                                <span>(Danh các môn học chờ lớp ) |</span>
+                                                <a href="#">Register wishlist</a>
+                                                <span>(Đăng ký)</span>
+                                            </li>                                            
+                                        </ul>
+                                    </td>
+
+                                    <td valign="top">
+                                        <h4>Information Access(Tra cứu thông tin)</h4>
+                                        <ul>
+                                            <li>
+                                                <a href="#">Tuition fee per course</a>
+                                                <span>(Biểu học phí)</span>
+                                            </li>
+                                            <li>
+                                                <a href="TimeTable">Weekly timetable</a>
+                                                <span>(Thời khóa biểu từng tuần)</span>
+                                            </li>
+                                            <li>
+                                                <a href="#">Blended Online Course (BLOC) Schedules</a>
+                                                <span>(Lịch học các môn theo phương pháp BLOC trong kỳ)</span>
+                                            </li>
+                                            <li>
+                                                <a href="#">View exam schedule</a>
+                                                <span>(Xem lịch thi)</span>
+                                                <img src="img/New_icons_10.gif" alt="">
+                                            </li>
+                                            <li>
+                                                <a href="#">View Syllabuses</a>
+                                                <span>(Xem đề cương môn học)</span>
+                                            </li>
+                                            <li>
+                                                <a href="#">EduNext student guideline</a>
+                                                <span></span>
+                                                <img src="img/New_icons_10.gif" alt="">
+                                            </li>
+                                            <li>
+                                                <a href="#">Help/Hỗ trợ</a>
+                                                <span></span>
+                                                <img src="img/New_icons_10.gif" alt="">
+                                            </li>
+                                            <li>
+                                                <a href="#">Tài liệu hướng dẫn: Định hướng cho sinh viên</a>
+                                                <span></span>
+                                                <img src="img/New_icons_10.gif" alt="">
+                                            </li>
+                                            
+                                        </ul>
+                                    </td>
+                                </tr>
+
+                                <tr>
+                                    <td valign="top" style="width:55%">
+                                        <h4>Feedback (Ý kiến)</h4>
+                                        <ul>
+                                            <li>
+                                                <a href="#">Feedback about teaching </a>
+                                                <span>(Ý kiến về việc giảng dạy)</span>
+                                            </li>
+                                        </ul>
+                                    </td>
+                                    <td valign="top">
+                                        <h4>Reports (Báo cáo)</h4>
+                                        <ul>
+                                            <li>
+                                                <a href="#">Attendance report</a>
+                                                <span>(Báo cáo điểm danh)</span>
+                                            </li>
+                                            <li>
+                                                <a href="#">Mark Report </a>
+                                                <span>(Báo cáo điểm)</span>
+                                            </li>
+                                            <li>
+                                                <a href="#">Academic Transcript</a>
+                                                <span>(Báo cáo điểm)</span>
+                                            </li>
+                                            <li>
+                                                <a href="#">Curriculum </a>
+                                                <span>(Khung chương trình)</span>
+                                            </li>
+                                            <li>
+                                                <a href="#">Student Fee</a>
+                                                <span>(Tra cứu học phí đã nộp theo kỳ)</span>
+                                            </li>
+                                            <li>
+                                                <a href="#">Transaction history</a>
+                                                <span>(Lịch sử giao dịch)</span>
+                                            </li>  
+                                        </ul>
+                                    </td>
+                                </tr>
+
+                                <tr>
+                                    <td valign="top" style="width:55%">
+                                        <h4>Others (Khác)</h4>
+                                        <ul>
+                                            <li>
+                                                <a href="#">Student Profile</a>
+                                                <span>|</span>
+                                                <a href="#">Update Profile</a>
+                                            </li>
+                                            <li>
+                                                <a href="#">View semester</a>
+                                                <span>,</span>
+                                                <a href="#">room</a>
+                                                <span>(Xem thông tin về học kỳ, phòng)</span>
+                                            </li>
+                                            <li>
+                                                <a href="#">Các loại chứng chỉ</a>
+                                                <span></span>
+                                            </li>
+                                            <li>
+                                                <a href="#">Report điểm phong trào</a>
+                                                <span></span>
+                                            </li>
+                                            <li>
+                                                <a href="#">How to access Wiley eBook on VitalSource platform</a>
+                                                <span></span>
+                                                <img src="img/New_icons_10.gif" alt="">
+                                            </li>
+                                        </ul>
+                                    </td>
+                                    <td valign="top">
+                                        <h4>Regulations (Các quy định)</h4>
+                                        <ul>
+                                            <li>
+                                                <a href="#">Regulations...</a>
+                                                <span></span>
+                                            </li>
+                                            <li>
+                                                <a href="#">Dormitory regulations  </a>
+                                                <span>(Nội quy KTX)</span>
+                                            </li>
+                                            <li>
+                                                <a href="#">Dormitory regulations </a>
+                                                <span>(Nội quy KTX Cần Thơ)</span>
+                                            </li>
+                                        </ul>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <footer class="container">
+        <div class="contact">
+            <b>Mọi góp ý, thắc mắc xin liên hệ: </b>
+            <span> Phòng dịch dụ viên viên: </span>
+            <span> Email:</span>
+            <a href="mailto:dichvusinhvien@fe.edu.vn">dichvusinhvien@fe.edu.vn</a>
+            <span>Phone:</span>
+            <b>(024)7308.13.13</b>
+        </div>
+        <div class="powered">
+            <span>© Powered by</span>
+            <a href="https://github.com/Lacel602">Tuấn Dũng</a>
+        </div>
+    </footer>
+
+    <script type="text/javascript">
+        $(document).ready(() => {
+            var email = "@ViewBag.Email";
+            console.log("Email" + email);
+        })
+
+        const Logout = () => {
+            var targetUrl = "/Home/Logout"; 
+            window.location.href = targetUrl;
+        }
+    </script>
+</body>

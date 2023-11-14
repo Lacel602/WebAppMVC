@@ -1,0 +1,165 @@
+﻿@addTagHelper *,Microsoft.AspNetCore.Mvc.TagHelpers
+
+@{
+    ViewData["Title"] = "FPT University Academic Portal";
+    var message = TempData["Message"] as string;
+}
+
+<head>
+    <link rel="Stylesheet" href="/css/header.css" type="text/css" />
+    <link rel="Stylesheet" href="/css/changeSlot.css" type="text/css" />
+    <link rel="Stylesheet" href="/css/editSlot.css" type="text/css" />
+    <script src="/lib/jquery/dist/jquery.js"></script>
+    <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
+
+</head>
+
+<body>
+    <div class="container">
+        <div class="row">
+            <div class="col-md-8">
+                <h1>
+                    <span>FPT University Academic Portal</span>
+                </h1>
+            </div>
+            <div class="col-md-4">
+                <table class="header">
+                    <tr>
+                        <td colspan="2" class="auto-style1"><strong>FAP mobile app (myFAP) is ready at</strong></td>
+
+                    </tr>
+                    <tr>
+                        <td>
+                            <a class="download-img" href="https://apps.apple.com/app/id1527723314">
+                                <img class="app-button" src="https://fap.fpt.edu.vn/images/app-store.png" style="width: 120px; height: 40px" alt="apple store" />
+                            </a>
+                        </td>
+                        <td>
+                            <a class="download-img" href="https://play.google.com/store/apps/details?id=com.fuct">
+                                <img class="app-button" src="https://fap.fpt.edu.vn/images/play-store.png" style="width: 120px; height: 40px" alt="google store" />
+                            </a>
+                        </td>
+
+                    </tr>
+                </table>
+            </div>
+        </div>
+        <div class="row">
+            <div class="navi">
+                <div class="nav-link">
+                    <a href="/Home">Home</a>
+                    |
+                    <a href="../TimeTable">View Schedule</a>
+                    |
+                    <a href="/TimeTable/ChangeSlot" style="color:black; font-weight:600;">Edit Schedule</a>
+                </div>
+                <div class="nav-button">
+                    <a href="#">@ViewBag.User.Code</a>
+                    |
+                    <a onclick="Logout()">Logout</a>
+                    |
+                    <a>CAMPUS: @ViewBag.User.Campus.Name</a>
+                </div>
+            </div>
+            <form id="frm" asp-controller="TimeTable" asp-action="EditSlot" method="post">
+                <div class="all-body">
+                    <h2>Change slot</h2>
+                    <input type="text" value="@ViewBag.Slot.Id" name="id" readonly hidden/>
+                    <h4>SlotId: @ViewBag.Slot.Id</h4>
+                    <div class="select-container">
+                        <div class="select-box">
+                            <select id="room" name="room" onchange="">
+                                @foreach (RoomDTO r in @ViewBag.Rooms)
+                                {
+                                    if (@r.Id == @ViewBag.Slot.RoomId)
+                                    {
+                                        <option value="@r.Id" selected>@r.Name</option>
+                                    }
+                                    else
+                                    {
+                                        <option value="@r.Id">@r.Name</option>
+                                    }
+                                }
+                            </select>
+                        </div>
+                        <div class="select-box" onchange="">
+                            <select id="slot" name="slot">
+                                @foreach (SlotTimeDTO s in @ViewBag.SlotTimes)
+                                {
+                                    if (s.Id <= 4)
+                                    {
+                                        if (s.Id == @ViewBag.Slot.TimeId)
+                                        {
+                                            <option value="@s.Id" selected>
+                                                @s.StartTime to @s.EndTime
+                                            </option>
+                                        }
+                                        else
+                                        {
+                                            <option value="@s.Id" >
+                                                @s.StartTime to @s.EndTime
+                                            </option>
+                                        }
+                                    }
+                                }
+                            </select>
+                        </div>
+
+                    </div>
+                    <div class="date-filter">
+                        <h5 id="day"></h5>
+                        <span>Change to new date</span>
+                        <input type="date" name="newDate" />
+                    </div>
+                    <div class="message-box">
+                        @if (!string.IsNullOrEmpty(message))
+                        {
+                            <p>@message</p>
+                        }
+                    </div>
+                    <button class="button-change" onclick="checkData()">Change</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+
+    <footer class="container">
+        <div class="powered">
+            <span>© Powered by</span>
+            <a href="https://github.com/Lacel602">Tuấn Dũng</a>
+        </div>
+    </footer>
+
+    <script type="text/javascript">
+        $(document).ready(() => {
+            addDay();
+        })
+
+        var slot = @Html.Raw(Json.Serialize(ViewBag.Slot));
+        var date = new Date(slot.week);
+
+        const addDay = () => {
+            var h = $("#day");
+            var dateObj = date.toLocaleDateString();
+            h.text("Currentdate of this slot " + dateObj);
+        }
+
+        const checkData = () => {
+            var newDate = $("#newDate").val();
+            if (newDate != null) {
+                newDate = new Date(newDate);
+            } else {
+                $("#frm").submit();
+            }
+
+            if (newDate < date) {
+                alert("Invalid day pick!!!!");
+            } else {
+                $("#frm").submit();
+            }
+        }
+    </script>
+</body>
+
+

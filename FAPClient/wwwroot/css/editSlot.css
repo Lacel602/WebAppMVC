@@ -1,0 +1,15 @@
+﻿body {
+}
+
+.button-change {
+    background: none;
+    border: none;
+    color: #fff;
+    background: #39add5;
+    border-radius: 5px;
+    padding: 2.5px 10px 3px 10px;
+}
+
+    .button-change:hover {
+        opacity: 0.7;
+    }

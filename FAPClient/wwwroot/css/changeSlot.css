@@ -1,0 +1,122 @@
+﻿body {
+    background: url('../img/img2.jpg') no-repeat;
+    background-size: cover;
+    color: #fff !important;
+    background-position: center top;
+}
+
+.header {
+    border: none !important;
+}
+
+.navi {
+    background-color: #f5f5f5cc !important;
+}
+
+.all-body {
+    padding: 40px 40px;
+    background-color: transparent;
+    border: 2px solid rgba(255,255,255,.2);
+    border-radius: 10px;
+    backdrop-filter: blur(20px);
+    box-shadow: 0 0 10px rgba(0,0,0,.2);
+}
+
+h2 {
+    margin-bottom: 20px;
+}
+
+.all-body table {
+    margin-top: 10px;
+    width: 100%;
+    border: solid 1px #fff;
+}
+
+.all-body table tbody td {
+    height: 35px;
+    padding-left: 8px;
+    background-color: #f5f5f547;
+}
+
+.all-body table tbody tr:hover td {
+    background-color: #ffc4c447;
+}
+
+.all-body table thead tr td {
+    text-align: center;
+    font-weight: 700;
+    background-color: #4ac1f254;
+    color: #fff;
+}
+
+
+.select-container {
+    display: flex;
+}
+
+    .select-container .select-box {
+        margin-bottom: 10px;
+        margin-right: 20px;
+    }
+
+        .select-container .select-box select {
+            background: transparent;
+            color: #fff;
+            border: none;
+            border: 1px solid #fff;
+            border-radius: 6px;
+        }
+
+        .select-container .select-box option {
+            color: black;
+        }
+
+.date-filter h4 {
+    margin-top: 20px;
+}
+
+
+.date-filter span {
+    margin-right: 5px;
+}
+
+.date-filter input {
+    margin-right: 15px;
+    margin-bottom: 30px;
+    background: transparent;
+    color: #fff;
+}
+
+.edit-button {
+    text-decoration: none;
+    color: #fff;
+    border-radius: 5px;
+    padding: 0px 6px 1.5px 6px;
+    background-color: #608bc0;
+    font-weight: 600;
+    font-size: 14px;
+    box-shadow: 2px 2px 3px #ffffffb3;
+}
+
+    .edit-button:hover {
+        color: #fff;
+        opacity: 0.6;
+    }
+
+    td h4{
+        text-align:center;
+        padding-top: 7px;
+    }
+
+.button-filter {
+    background: none;
+    border: none;
+    color: #fff;
+    background: #39add5;
+    border-radius: 5px;
+    padding: 2.5px 10px 3px 10px;
+}
+
+.button-filter:hover{
+    opacity:0.7;
+}

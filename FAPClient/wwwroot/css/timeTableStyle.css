@@ -1,0 +1,120 @@
+﻿@import url('https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,100;0,300;0,400;0,500;0,700;0,900;1,100;1,300;1,400;1,500;1,700;1,900&family=Tinos:ital,wght@0,400;0,700;1,400;1,700&display=swap');
+
+h2 {
+    margin-top: 20px;
+}
+
+.all-body {
+    font-size: 13.5px;
+}
+
+    .all-body p {
+        font-size: inherit;
+    }
+
+.time-table table {
+    border: solid 1px #fff;
+    width: 100%;
+}
+
+    .time-table table thead td {
+        width: 12.5%;
+        background-color: #6b90da;
+        height: 25px;
+    }
+
+table .red-light {
+    color: orangered;
+    font-weight: 600;
+}
+
+#table-body tr {
+    border-bottom: 1px solid #f0f0f0;
+}
+
+    #table-body tr td {
+        padding: 4px 6px;
+    }
+
+table tr td a {
+    text-decoration: none;
+}
+
+.course-name {
+    width: 100%;
+    display: block;
+    color: #337ab7;
+}
+
+    .course-name:hover {
+        text-decoration: underline;
+        color: #103656;
+    }
+
+.view-material {
+    display: block;
+    line-height: 1;
+    margin-bottom: 3px;
+}
+
+    .view-material span {
+        color: #fff;
+        background-color: #f0ad4e;
+        font-size: 11px;
+        font-weight: 600;
+        padding: 0.5px 5px 2.5px 5px;
+        border-radius: 3px;
+    }
+
+        .view-material span:hover {
+            background-color: #ec971f;
+        }
+
+.room {
+    line-height: 1;
+}
+
+.edunext {
+    line-height: 1;
+    margin-bottom: 2px;
+}
+
+    .edunext span {
+        color: #fff;
+        background-color: #337ab7;
+        font-size: 11px;
+        font-weight: 600;
+        padding: 0.5px 5px 2.5px 5px;
+        border-radius: 3px;
+    }
+
+        .edunext span:hover {
+            background-color: #286090;
+        }
+
+.slot-box {
+    line-height: 1;
+    margin-bottom: 3px;
+}
+
+.attendance span {
+    color: red;
+}
+
+.time-slot {
+    color: #fff;
+    background-color: #5cb85c;
+    font-size: 11px;
+    font-weight: 600;
+    padding: 0.5px 5px 2.5px 5px;
+    border-radius: 3px;
+}
+
+ul li a{
+    text-decoration:none;
+    font-weight:600;
+}
+
+ul li a:hover{
+    text-decoration:underline;
+}

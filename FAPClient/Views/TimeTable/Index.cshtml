@@ -1,0 +1,424 @@
+﻿@addTagHelper *,Microsoft.AspNetCore.Mvc.TagHelpers
+
+@{
+    var message = TempData["Message"] as string;
+    ViewData["Title"] = "FPT University Academic Portal";
+}
+
+<head>
+    <link rel="Stylesheet" href="css/header.css" type="text/css" />
+    <link rel="Stylesheet" href="css/timeTableStyle.css" type="text/css" />
+    <script src="lib/jquery/dist/jquery.js"></script>
+</head>
+<body>
+    <div class="container">
+        <div class="row">
+            <div class="col-md-8">
+                <h1>
+                    <span>FPT University Academic Portal</span>
+                </h1>
+            </div>
+            <div class="col-md-4">
+                <table class="header">
+                    <tr>
+                        <td colspan="2" class="auto-style1"><strong>FAP mobile app (myFAP) is ready at</strong></td>
+
+                    </tr>
+                    <tr>
+                        <td>
+                            <a class="download-img" href="https://apps.apple.com/app/id1527723314">
+                                <img class="app-button" src="https://fap.fpt.edu.vn/images/app-store.png" style="width: 120px; height: 40px" alt="apple store" />
+                            </a>
+                        </td>
+                        <td>
+                            <a class="download-img" href="https://play.google.com/store/apps/details?id=com.fuct">
+                                <img class="app-button" src="https://fap.fpt.edu.vn/images/play-store.png" style="width: 120px; height: 40px" alt="google store" />
+                            </a>
+                        </td>
+
+                    </tr>
+                </table>
+            </div>
+        </div>
+        <div class="row">
+            <div class="navi">
+                <div class="nav-link">
+                    <a href="Home">Home</a>
+                    |
+                    <a href="TimeTable" style="color:black; font-weight:600;">View Schedule</a>
+                </div>
+                <div class="nav-button">
+                    <a href="#">@ViewBag.User.Code</a>
+                    |
+                    <a onclick="Logout()">Logout</a>
+                    |
+                    <a>CAMPUS: @ViewBag.User.Campus.Name</a>
+                </div>
+            </div>
+
+
+            <div class="all-body">
+                <h2>Activities for @ViewBag.User.Code (@ViewBag.User.FullName)</h2>
+                <p>
+                    <b>Note: </b>
+                    These activities do not include extra-curriculum activities, such as club activities ...
+                </p>
+                <p>
+                    <b>Chú thích: </b>
+                    Các hoạt động trong bảng dưới không bao gồm hoạt động ngoại khóa, ví dụ như hoạt động câu lạc bộ ...
+                </p>
+
+                <div class="note">
+                    <p>
+                        Các phòng bắt đầu bằng AL thuộc tòa nhà Alpha. VD: AL...
+                        <br />
+                        Các phòng bắt đầu bằng BE thuộc tòa nhà Beta. VD: BE,..
+                        <br />
+                        Các phòng bắt đầu bằng G thuộc tòa nhà Gamma. VD: G201,...
+                        <br />
+                        Các phòng tập bằng đầu bằng R thuộc khu vực sân tập Vovinam.
+                        <br />
+                        Các phòng bắt đầu bằng DE thuộc tòa nhà Delta. VD: DE,..
+                        <br />
+                        Little UK (LUK) thuộc tầng 5 tòa nhà Delta
+                    </p>
+                </div>
+                <form id="frm" asp-controller="TimeTable" asp-action="Index" method="post">
+                    <input type="date" name="startTime" id="startTime" value="" hidden/>
+                    <div class="time-table">
+                        <table class="table-bordered">
+                            <thead>
+                                <tr>
+                                    <td rowspan="2">
+                                        <span class="red-light">YEAR</span>
+                                        <select id="year-select" name="year-select" onchange="getSelectWeek(2)">
+                                        </select>
+                                        <br />
+                                        <span>WEEK</span>
+                                        <select id="week-select" name="week" onchange="getDayWeek(2)">
+                                        </select>
+                                    </td>
+                                    <td>
+                                        <span>MON </span>
+                                    </td>
+                                    <td>
+                                        <span>TUE </span>
+                                    </td>
+                                    <td>
+                                        <span>WED </span>
+                                    </td>
+                                    <td>
+                                        <span>THU </span>
+                                    </td>
+                                    <td>
+                                        <span>FRI </span>
+                                    </td>
+                                    <td>
+                                        <span>SAT </span>
+                                    </td>
+                                    <td>
+                                        <span>SUN </span>
+                                    </td>
+                                </tr>
+
+                                <tr id="day-of-month">
+                                </tr>
+
+                            </thead>
+                            <tr>
+                                <td>
+                                    @*<div class="slot">
+                                    <a class="course-name">MLN122</a>
+                                    <a href="#" class="view-material">
+                                    <span>Views Material</span>
+                                    </a>
+                                    <span class="room">at BE-206</span>
+                                    <a href="#" class="edunext">
+                                    <span>Edunext</span>
+                                    </a>
+                                    <div class="slot-box">
+                                    <span class="attendance">(<span>Not yet</span>)</span>
+                                    </div>
+                                    <div class="slot-box">
+                                    <span class="time-slot">(12:50-15:10)</span>
+                                    </div>
+                                    </div>*@
+                                </td>
+                            </tr>
+                            <tbody id="table-body">
+                            </tbody>
+                        </table>
+                    </div>
+                </form>
+
+
+                <p>
+                    <b>More note / Chú thích thêm:</b>
+                </p>
+                @if (!string.IsNullOrEmpty(message))
+                {
+                    <p>@message</p>
+                }
+                <ul id="description-attendance">
+                    <li>(<font color="green">attended</font>): dunglthe163788 had attended this activity / @ViewBag.User.FullName đã tham gia hoạt động này</li>
+                    <li>(<font color="red">absent</font>): dunglthe163788 had NOT attended this activity / @ViewBag.User.FullName đã vắng mặt buổi này</li>
+                    <li>(-): no data was given / chưa có dữ liệu</li>
+                    <li><a href="TimeTable/ChangeSlot">Change class schedule / Đổi lịch học</a></li>
+                </ul>
+            </div>
+        </div>
+    </div>
+    <footer class="container">
+        <div class="contact">
+            <b>Mọi góp ý, thắc mắc xin liên hệ: </b>
+            <span> Phòng dịch dụ viên viên: </span>
+            <span> Email:</span>
+            <a href="mailto:dichvusinhvien@fe.edu.vn">dichvusinhvien@fe.edu.vn</a>
+            <span>Phone:</span>
+            <b>(024)7308.13.13</b>
+        </div>
+        <div class="powered">
+            <span>© Powered by</span>
+            <a href="https://github.com/Lacel602">Tuấn Dũng</a>
+        </div>
+    </footer>
+
+    @foreach (SlotDTO s in ViewBag.ListSlot)
+    {
+        var cslot = s;
+    }
+
+    <script type="text/javascript">
+        $(document).ready(() => {
+            getSelectYear(1);
+            getSelectWeek(1);
+            printSlot();
+            checkRole();
+        })
+        const checkRole = () => {
+            var user = @Html.Raw(Json.Serialize(ViewBag.User));
+            if (user.roleId == 2) {
+                var ul = $("#description-attendance");
+                ul.empty();
+
+                var html = `
+                                                    <li><a href="TimeTable/ChangeSlot">Change class schedule / Đổi lịch học</a></li>
+                                        `
+                ul.append(html);
+            }
+        }
+        const getSelectYear = (ok) => {         
+            var dateTime = @Html.Raw(Json.Serialize(ViewBag.Date));
+            var selectedYear = new Date(dateTime).getFullYear();
+
+            var currentYear = new Date().getFullYear();
+            var yearSelect = $("#year-select");
+            var fourYears = currentYear - 3;
+            currentYear++;
+
+            for (var year = currentYear; year >= fourYears; year--) {
+                var option = $("<option>");
+                option.val(year);
+                option.text(year);
+                if (year == selectedYear) {
+                    option.prop("selected", true);
+                }
+                if (year == (currentYear-1)) {
+                    option.css("color", "red");
+                }
+                yearSelect.append(option);
+            }
+        }
+
+        var isCurrentWeek = false;
+        var currWeek = 0;
+
+        const getSelectWeek = (ok) => {
+            var weekSelect = $("#week-select");
+            var yearSelect = $("#year-select");
+            weekSelect.empty();
+
+            for (var week = 1; week <= 52; week++) {
+
+                var selectedWeek = @Html.Raw(Json.Serialize(ViewBag.Week));
+                var option = $("<option>");
+                option.val(week);
+                option.text(getWeekRange(yearSelect.val(), week));
+                if (isCurrentWeek) {
+                    option.css("color", "red");
+                }
+                if (selectedWeek == 0) {
+                    if (option.val() == currWeek) {
+                        option.prop("selected", true);
+                    }
+                } else {
+                    if (option.val() == selectedWeek) {
+                        option.prop("selected", true);
+                    }
+                }             
+
+                weekSelect.append(option);
+            }
+            getDayWeek(ok);
+        }
+
+        function getWeekRange(year, week) {
+            //Get d (firstday of the week)
+            var d = new Date(year, 0, 1 + (week - 1) * 7);
+            var dayOfWeek = d.getDay();
+            //Set d to Monday
+            if (dayOfWeek !== 1) {
+                d.setDate(d.getDate() + (1 - dayOfWeek));
+            }
+            //Caculate first day and end day of a week
+            var startDate = new Date(d);
+            var endDate = new Date(d);
+            endDate.setDate(d.getDate() + 6);
+
+            //Caculate Week
+
+            //currentWeek
+            var curr = new Date();
+            var first = curr.getDate() - curr.getDay() + 1;
+            var firstDayOfCurrentWeek = new Date(curr.setDate(first));
+
+            startDate.setHours(0, 0, 0, 0);
+            firstDayOfCurrentWeek.setHours(0, 0, 0, 0);
+
+            if (firstDayOfCurrentWeek.getTime() === startDate.getTime()) {
+                currWeek = week;
+                isCurrentWeek = true;
+            } else {
+                isCurrentWeek = false;
+            }
+            return `${formatNumber(startDate.getDate())}/${formatNumber(startDate.getMonth() + 1)} to ${formatNumber(endDate.getDate())}/${formatNumber(endDate.getMonth() + 1)}`;
+        }
+
+        const formatNumber = (number) => (number < 10 ? `0${number}` : `${number}`);
+
+        const getDayWeek = (ok) => {
+            var year = $("#year-select").val();
+            var week = $("#week-select").val();
+            console.log(year + " " + week);
+            printDay(year, week);
+            printTable();
+            if (ok == 2) {
+                $("#frm").submit();
+            }
+        }
+
+        const printDay = (year, week) => {
+            const firstDayOfYear = new Date(year, 0, 1);
+            let firstDay = new Date(firstDayOfYear);
+            firstDay.setDate(firstDay.getDate() + (week - 1) * 7 + 1);
+            const start = new Date(firstDay);
+            const end = new Date(start);
+            end.setDate(start.getDate() + 6);
+
+
+            const givenDate = new Date(start);
+            givenDate.setDate(start.getDate() + 1);
+            $("#startTime").val(givenDate.toISOString().split('T')[0]);
+
+            var dayOfMonth = $("#day-of-month");
+            dayOfMonth.empty();
+
+            for (var date = new Date(start); date <= end; date.setDate(date.getDate() + 1)) {
+                var td = $("<td></td>");
+                var html = `${formatNumber(date.getDate())}/${formatNumber(date.getMonth() + 1)}`;
+                var span = $("<span>" + html + "</span>");
+                td.append(span);
+                dayOfMonth.append(td);
+            }
+        }
+
+        const printTable = () => {
+            var tableBody = $("#table-body");
+            tableBody.empty();
+
+            var numRows = 10;
+            var numCols = 8;
+            for (var i = 1; i <= numRows; i++) {
+                var row = $('<tr>');
+                for (var j = 1; j <= numCols; j++) {
+                    var cell = $('<td>');
+                    if (j == 1) {
+                        cell.text('Slot ' + i);
+                    } else {
+                        cell.attr('id', i + '-' + j);
+                        cell.text('-');
+                    }
+                    row.append(cell);
+                }
+                tableBody.append(row);
+            }
+        }
+
+        const AddSlot = (cell, slot) => {
+            cell.empty();
+            var formattedStartTime = formatTime(slot.time.startTime);
+            var formattedEndTime = formatTime(slot.time.endTime);
+            var html = `
+                                         <div class="slot">
+                                             <a class="course-name">${slot.course.code}</a>
+                                             <a href="#" class="view-material">
+                                                 <span>Views Material</span>
+                                             </a>
+                                             <span class="room">at ${slot.room.name}</span>
+                                             <a href="#" class="edunext">
+                                                 <span>Edunext</span>
+                                             </a>
+                                             <div class="slot-box">
+                                                 <span class="attendance">(<span>Not yet</span>)</span>
+                                             </div>
+                                             <div class="slot-box">
+                                                 <span class="time-slot">(${formattedStartTime}-${formattedEndTime})</span>
+                                             </div>
+                                         </div>
+                                                                            `;
+            cell.append(html);
+        }
+
+        const formatTime = (dateString) => {
+            const [slpitHours, splitMinutes, splitSeconds] = dateString.split(':');
+
+            const TimeHours = parseInt(slpitHours);
+            const TimeMinutes = parseInt(splitMinutes);
+            const TimeSeconds = parseInt(splitSeconds);
+
+            const date = new Date(0, 0, 0, TimeHours, TimeMinutes, TimeSeconds);
+
+            const hours = date.getHours();
+            const minutes = date.getMinutes();
+
+            const formatted = `${hours.toString().padStart(2, '0')}:${minutes.toString().padStart(2, '0')}`;
+            return formatted;
+        }
+
+        const Logout = () => {
+            var targetUrl = "/Home/Logout";
+            window.location.href = targetUrl;
+        }
+
+        const printSlot = () => {
+            var listSlot = @Html.Raw(Json.Serialize(ViewBag.ListSlot));
+
+            for (var i = 1; i <= 10; i++) {
+                for (var j = 2; j <= 8; j++) {
+                    var slot = listSlot.find(function (item) {
+                        var date = new Date(item.week);
+                        var dayOfWeek = date.getDay() + 1;
+                        return dayOfWeek === j && item.timeId === i;
+                    });
+
+                    if (slot) {
+                        var id = "#" + i + "-" + j;
+                        var cell = $(id);
+                        AddSlot(cell, slot);
+                        //cell.text(slot.id);
+                    }
+                }
+            }
+        }
+    </script>
+</body>

@@ -1,0 +1,420 @@
+﻿@addTagHelper *,Microsoft.AspNetCore.Mvc.TagHelpers
+
+@{
+    ViewData["Title"] = "FPT University Academic Portal";
+    var message = TempData["Message"] as string;
+}
+
+<head>
+    <link rel="Stylesheet" href="/css/header.css" type="text/css" />
+    <link rel="Stylesheet" href="/css/changeSlot.css" type="text/css" />
+    <script src="/lib/jquery/dist/jquery.js"></script>
+    <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
+
+</head>
+
+<body>
+    <div class="container">
+        <div class="row">
+            <div class="col-md-8">
+                <h1>
+                    <span>FPT University Academic Portal</span>
+                </h1>
+            </div>
+            <div class="col-md-4">
+                <table class="header">
+                    <tr>
+                        <td colspan="2" class="auto-style1"><strong>FAP mobile app (myFAP) is ready at</strong></td>
+
+                    </tr>
+                    <tr>
+                        <td>
+                            <a class="download-img" href="https://apps.apple.com/app/id1527723314">
+                                <img class="app-button" src="https://fap.fpt.edu.vn/images/app-store.png" style="width: 120px; height: 40px" alt="apple store" />
+                            </a>
+                        </td>
+                        <td>
+                            <a class="download-img" href="https://play.google.com/store/apps/details?id=com.fuct">
+                                <img class="app-button" src="https://fap.fpt.edu.vn/images/play-store.png" style="width: 120px; height: 40px" alt="google store" />
+                            </a>
+                        </td>
+
+                    </tr>
+                </table>
+            </div>
+        </div>
+        <div class="row">
+            <div class="navi">
+                <div class="nav-link">
+                    <a href="/Home">Home</a>
+                    |
+                    <a href="../TimeTable">View Schedule</a>
+                    |
+                    <a href="/TimeTable/ChangeSlot" style="color:black; font-weight:600;">Edit Schedule</a>
+                </div>
+                <div class="nav-button">
+                    <a href="#">@ViewBag.User.Code</a>
+                    |
+                    <a onclick="Logout()">Logout</a>
+                    |
+                    <a>CAMPUS: @ViewBag.User.Campus.Name</a>
+                </div>
+            </div>
+
+            <div class="all-body">
+                <h2>Edit schedule for @ViewBag.User.FullName</h2>
+                <h4>Please select course first then class</h4>
+                <div class="select-container">
+                    <div class="select-box">
+                        <select id="course" onchange="getClassByCourseAndTeacherId()">
+                            <option value="0" selected>Select Course</option>
+                        </select>
+                    </div>
+                    <div class="select-box" onchange="getSlot()">
+                        <select id="class">
+                            <option value="0" selected>Select Class</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="date-filter">
+                    <h4>Pick startDate and endDate</h4>
+                    <span>StartDate</span>
+                    <input type="date" name="startDate" id="startDate" />
+                    <span>EndDate</span>
+                    <input type="date" name="endDate" id="endDate" />
+
+                    <button onclick="filterSlot()" class="button-filter">Filter</button>
+                </div>
+
+                <table class="table-bordered" id="main-table">
+                    <thead>
+                    </thead>
+                    <tr>
+                        <td style="justify-items:center;">
+                            <h4>There are no slot found with these requirements!</h4>
+                        </td>
+                    </tr>
+                    <tbody id="table-body">
+                    </tbody>
+                </table>
+
+            </div>
+
+        </div>
+    </div>
+
+
+    <footer class="container">
+        <div class="powered">
+            <span>© Powered by</span>
+            <a href="https://github.com/Lacel602">Tuấn Dũng</a>
+        </div>
+    </footer>
+
+    <script type="text/javascript">
+        $(document).ready(() => {
+            getCourseByTeacherId();
+        })
+
+        var user = @Html.Raw(Json.Serialize(ViewBag.User));
+        var listData;
+
+        const getCourseByTeacherId = () => {
+            $.ajax({
+                url: `https://localhost:5000/api/Course/GetCourseById/${user.uid}`,
+                type: "GET",
+                headers: {
+                    "Content-Type": "application/json",
+                },
+                success: (data) => loadDataToCourseSelect(data),
+                error: () => { alert("Error getting course!") }
+            });
+        }
+        const loadDataToCourseSelect = (data) => {
+            var courseSelect = $("#course");
+            courseSelect.empty();
+            courseSelect.append(`<option value="0" selected>Select Course</option>`);
+            data.forEach(element => {
+                var html = `
+                                                                                                                    <option value="${element.id}">${element.code}</option>
+                                                                                                        `;
+                courseSelect.append(html);
+            });
+        }
+
+        const getClassByCourseAndTeacherId = () => {
+            var courseSelect = $("#course");
+            if (courseSelect.val() == 0) {
+                alert("Course not valid!");
+            } else {
+                var courseId = courseSelect.val();
+                var teacherId = user.uid;
+                $.ajax({
+                    url: 'https://localhost:5000/api/Class/GetClassByTeacherId/' + teacherId + '/' + courseId,
+                    type: "GET",
+                    headers: {
+                        "Content-Type": "application/json",
+                    },
+                    success: (data) => loadDataToClassSelect(data),
+                    error: () => { alert("Error getting class!") }
+                });
+            }
+        }
+
+        const loadDataToClassSelect = (data) => {
+            var classSelect = $("#class");
+            classSelect.empty();
+            classSelect.append('<option value="0" selected>Select Class</option>');
+            data.forEach(element => {
+                var html = `
+                                                                                                                            <option value="${element.id}">${element.code}</option>
+                                                                                                                `;
+                classSelect.append(html);
+            });
+        }
+
+        const getSlot = () => {
+            var courseSelect = $("#course");
+            var classSelect = $("#class");
+            if (courseSelect.val() == 0) {
+                alert("Course not valid!");
+            }
+            if (classSelect.val() == 0) {
+                alert("Class not valid!");
+            }
+
+
+            if (courseSelect.val() != 0 && classSelect.val() != 0) {
+                var courseId = courseSelect.val();
+                var teacherId = user.uid;
+                var classId = classSelect.val();
+
+                $.ajax({
+                    url: 'https://localhost:5000/api/Slot/GetSlotByCourseAndUidAndClass/' + teacherId + '/' + courseId + '/' + classId,
+                    type: "GET",
+                    headers: {
+                        "Content-Type": "application/json",
+                    },
+                    success: (data) => loadSlot(data),
+                    error: () => { alert("Error getting class!") }
+                });
+            }
+        }
+
+        const formatDateTime = (ndate) => {
+            const date = new Date(ndate);
+
+            const month = (date.getDate()).toString().padStart(2, '0');
+            const day = (date.getMonth() + 1).toString().padStart(2, '0');
+            const year = date.getFullYear();
+
+            return `${month}/${day}/${year}`;
+        }
+
+        const filterSlot = () => {
+            var courseSelect = $("#course");
+            var classSelect = $("#class");
+
+            var courseId = courseSelect.val();
+            var teacherId = user.uid;
+            var classId = classSelect.val();
+
+            var start = $("#startDate").val();
+            var end = $("#endDate").val();
+            if (start == null || end == null) {
+                alert("Please pick up time before filter.");
+            } else {
+                if (end < start) {
+                    alert("Day not valid.");
+                } else {
+                    $.ajax({
+                        url: 'https://localhost:5000/api/Slot/GetSlotByCourseAndUidAndClass/' + teacherId + '/' + courseId + '/' + classId,
+                        type: "GET",
+                        headers: {
+                            "Content-Type": "application/json",
+                        },
+                        success: (data) => loadFilterSlot(data),
+                        error: () => { alert("Error getting class!") }
+                    });
+                }
+            }
+        }
+
+        const loadFilterSlot = (data) => {
+            var start = $("#startDate").val();
+
+            var end = $("#endDate").val();
+            console.log(start);
+            console.log(end);
+
+            var table = $("#main-table");
+            table.empty();
+            if (!data) {
+                var html = `
+                                                               <tr>
+                                                                   <td>
+                                                                       <h4>There are no slot found with these requirements!</h4>
+                                                                   </td>
+                                                               </tr>
+                                                   `;
+                table.append(html);
+            } else {
+                var ht = `
+                                                          <thead>
+                                                              <tr>
+                                                                  <td>Id</td>
+                                                                  <td>Course</td>
+                                                                  <td>Class</td>
+                                                                  <td>Room</td>
+                                                                  <td>Slot</td>
+                                                                  <td>StartTime</td>
+                                                                  <td>EndTime</td>
+                                                                  <td onclick="sortList()">Day</td>
+                                                                  <td>Action</td>
+                                                              </tr>
+                                                          </thead>
+                                                          <tbody id="table-body">
+                                                          </tbody>
+                                                      `;
+                table.append(ht);
+                var tableBody = $("#table-body");
+                var data2 = [];
+                data.forEach(element => {
+                    
+                    var time = formatDateTime(element.week);
+
+                    var st = new Date(start);
+                    st.setHours(0, 0, 0, 0);
+                    var en = new Date(end);
+                    en.setHours(0, 0, 0, 0);
+                    var ctime = new Date(element.week);
+                    ctime.setHours(0, 0, 0, 0);
+
+                    var curr = new Date();
+                    var t = new Date(element.week);
+
+                    if (ctime >= st && ctime <= en) {
+                        data2.push(element);
+                        if (curr < t) {
+                            var hm = `
+                                                                                                                        <tr>
+                                                                                                                            <td>${element.id}</td>
+                                                                                                                            <td>${element.course.code}</td>
+                                                                                                                            <td>${element.class.code}</td>
+                                                                                                                            <td>${element.room.name}</td>
+                                                                                                                            <td>${element.timeId}</td>
+                                                                                                                            <td>${element.time.startTime}</td>
+                                                                                                                            <td>${element.time.endTime}</td>
+                                                                                                                            <td>${time}</td>
+                                                                                                                            <td><a href="/TimeTable/EditSlot?id=${element.id}" class="edit-button">Edit</a></td>
+                                                                                                                        </tr>
+                                                                                                                        `;
+                        } else {
+                            var hm = `
+                                                                                                                        <tr>
+                                                                                                                            <td>${element.id}</td>
+                                                                                                                            <td>${element.course.code}</td>
+                                                                                                                            <td>${element.class.code}</td>
+                                                                                                                            <td>${element.room.name}</td>
+                                                                                                                            <td>${element.timeId}</td>
+                                                                                                                            <td>${element.time.startTime}</td>
+                                                                                                                            <td>${element.time.endTime}</td>
+                                                                                                                            <td>${time}</td>
+                                                                                                                            <td></td>
+                                                                                                                        </tr>
+                                                                                                                        `;
+                        }
+                        tableBody.append(hm);
+                    }
+                })
+                listData = data2;
+            }
+        }
+
+        const sortList = () => {
+            console.log("sort");
+            listData = listData.sort((a, b) => {
+                const dateA = Date.parse(a.week);
+                const dateB = Date.parse(b.week);
+                return dateA - dateB;
+            });
+            loadSlot(listData);
+        }
+        const loadSlot = (data) => {
+
+            var table = $("#main-table");
+            table.empty();
+            if (!data) {
+                var html = `
+                                                                                                            <tr>
+                                                                                                                <td>
+                                                                                                                    <h4>There are no slot found with these requirements!</h4>
+                                                                                                                </td>
+                                                                                                            </tr>
+                                                                                                `;
+                table.append(html);
+            } else {
+                var ht = `
+                                                                                                            <thead>
+                                                                                                                <tr>
+                                                                                                                    <td>Id</td>
+                                                                                                                    <td>Course</td>
+                                                                                                                    <td>Class</td>
+                                                                                                                    <td>Room</td>
+                                                                                                                    <td>Slot</td>
+                                                                                                                    <td>StartTime</td>
+                                                                                                                    <td>EndTime</td>
+                                                                                                                    <td onclick="sortList()">Day</td>
+                                                                                                                    <td>Action</td>
+                                                                                                                </tr>
+                                                                                                            </thead>
+                                                                                                            <tbody id="table-body">
+                                                                                                            </tbody>
+                                                                                                        `;
+                table.append(ht);
+                var tableBody = $("#table-body");
+                data.forEach(element => {
+
+                    var time = formatDateTime(element.week);
+                    var curr = new Date();
+                    var t = new Date(element.week);
+                    if (curr < t) {
+                        var hm = `
+                                                                                                                <tr>
+                                                                                                                    <td>${element.id}</td>
+                                                                                                                    <td>${element.course.code}</td>
+                                                                                                                    <td>${element.class.code}</td>
+                                                                                                                    <td>${element.room.name}</td>
+                                                                                                                    <td>${element.timeId}</td>
+                                                                                                                    <td>${element.time.startTime}</td>
+                                                                                                                    <td>${element.time.endTime}</td>
+                                                                                                                    <td>${time}</td>
+                                                                                                                    <td><a href="/TimeTable/EditSlot?id=${element.id}" class="edit-button">Edit</a></td>
+                                                                                                                </tr>
+                                                                                                                `;
+                    } else {
+                        var hm = `
+                                                                                                                <tr>
+                                                                                                                    <td>${element.id}</td>
+                                                                                                                    <td>${element.course.code}</td>
+                                                                                                                    <td>${element.class.code}</td>
+                                                                                                                    <td>${element.room.name}</td>
+                                                                                                                    <td>${element.timeId}</td>
+                                                                                                                    <td>${element.time.startTime}</td>
+                                                                                                                    <td>${element.time.endTime}</td>
+                                                                                                                    <td>${time}</td>
+                                                                                                                    <td></td>
+                                                                                                                </tr>
+                                                                                                                `;
+                    }
+
+                    tableBody.append(hm);
+                })
+               
+            }
+            listData = data;
+        }
+    </script>
+</body>
+
+

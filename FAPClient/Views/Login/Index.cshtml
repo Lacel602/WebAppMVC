@@ -1,0 +1,102 @@
+﻿@addTagHelper *,Microsoft.AspNetCore.Mvc.TagHelpers
+@{
+    ViewData["Title"] = "FPT University Academic Portal";
+    var message = TempData["Message"] as string;
+}
+
+<head>
+    <link rel="Stylesheet" href="css/header.css" type="text/css" />
+    <link rel="Stylesheet" href="css/loginStyle.css" type="text/css" />
+    <script src="lib/jquery/dist/jquery.js"></script>
+    <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
+</head>
+<body>
+    <div class="container">
+        <div class="row">
+            <div class="col-md-8">
+                <h1>
+                    <span>FPT University Academic Portal</span>
+                </h1>
+            </div>
+            <div class="col-md-4">
+                <table class="header">
+                    <tr>
+                        <td colspan="2" class="auto-style1"><strong>FAP mobile app (myFAP) is ready at</strong></td>
+
+                    </tr>
+                    <tr>
+                        <td>
+                            <a class="download-img" href="https://apps.apple.com/app/id1527723314">
+                                <img class="app-button" src="https://fap.fpt.edu.vn/images/app-store.png" style="width: 120px; height: 40px" alt="apple store" />
+                            </a>
+                        </td>
+                        <td>
+                            <a class="download-img" href="https://play.google.com/store/apps/details?id=com.fuct">
+                                <img class="app-button" src="https://fap.fpt.edu.vn/images/play-store.png" style="width: 120px; height: 40px" alt="google store" />
+                            </a>
+                        </td>
+
+                    </tr>
+                </table>
+            </div>
+        </div>
+        <div class="row">
+            <div class="all-body">
+                <div class="login-form">
+                    <form id="frm" asp-controller="Login" asp-action="Index" method="post">
+                        <h2>Login</h2>
+                        <div class="google">
+                            <div class="input-box">
+                                <input type="text" name="email" id="email" placeholder="Email" required />
+                                <i class='bx bx-user'></i>
+                            </div>
+                            <div class="input-box">
+                                <input type="password" name="password" id="password" placeholder="Password" required />
+                                <i class='bx bx-lock-alt'></i>
+                            </div>
+                            <div class="input-box select-container">
+                                <select id="campus" name="campus">
+                                    <option value="0" selected>Select Campus</option>
+                                    @foreach (CampusDTO c in @ViewBag.ListCampus)
+                                    {
+                                        <option value="@c.Id">@c.Name</option>
+                                    }
+                                </select>
+                                <div class="icon-box">
+                                    <i class='bx bxs-school'></i>
+                                </div>
+                            </div>
+                            <br />
+                            <div class="message-box">
+                                @if (!string.IsNullOrEmpty(message))
+                                {
+                                    <p>@message</p>
+                                }
+                            </div>
+                            <div class="link-box">
+                                <a onclick="submitForm()">
+                                    <span>Login with Email</span>
+                                </a>
+                                <a href="" onclick="submitForm()">
+                                    <span>Login with FEID</span>
+                                </a>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+    <footer class="container">
+        <div class="powered">
+            <span>© Powered by</span>
+            <a href="https://github.com/Lacel602">Tuấn Dũng</a>
+        </div>
+    </footer>
+
+    <script type="text/javascript">
+        function submitForm(){
+            document.getElementById("frm").submit();
+            }
+    </script>
+</body>
